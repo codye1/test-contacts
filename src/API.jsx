@@ -34,13 +34,35 @@ export const contactsApi = createApi({
       invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
     }),
     deleteContact: builder.mutation({
-      query: (contactId) => ({
-        url: `/contact/${contactId}`,
+      query: (id) => ({
+        url: `/contact/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
     }),
+    getContactById:builder.query({
+      query: (id) => ({
+        url: `/contact/${id}`
+      }),
+      providesTags: (result) =>
+        result?.resources
+          ? [
+              ...result.resources.map(({ id }) => ({ type: 'Contact', id })),
+              { type: 'Contact', id: 'LIST' },
+            ]
+          : [{ type: 'Contact', id: 'LIST' }],
+    }),
+    addTag:builder.mutation({
+      query: ({id,tags}) => ({
+        url: `/contacts/${id}/tags`,
+        method: "PUT",
+        body:{
+          tags:tags
+        }
+      }),
+      invalidatesTags: [{ type: 'Contact', id: 'LIST' }]
+    })
   }),
 });
 
-export const { useGetContactsQuery, useAddContactMutation, useDeleteContactMutation } = contactsApi;
+export const { useGetContactsQuery, useAddContactMutation, useDeleteContactMutation , useGetContactByIdQuery , useAddTagMutation} = contactsApi;

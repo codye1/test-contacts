@@ -4,7 +4,7 @@ import Routing from "./rout/routing";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="test-contacts">
       <Routing/>
     </BrowserRouter>
   );

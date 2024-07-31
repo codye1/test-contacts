@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useDeleteContactMutation, useGetContactsQuery } from "../API";
 import ContactsCard from "./ContactsCard";
 
@@ -15,6 +16,8 @@ const ContactsList = () => {
       console.log(element.tags.map(tag=>tag.tag) );
     });
   }
+
+  const navigate = useNavigate()
 
   return (
     <div className="pl-[30px] pr-[10px] w-[70%] ">
@@ -42,6 +45,10 @@ const ContactsList = () => {
               avatarUrl={avatarUrl}
               tags={tags}
               deleteContact={deleteContact}
+              onClick={()=>{
+                console.log("click");
+                navigate(`/contacts/${contact.id}`)
+              }}
             />
           );
         })}

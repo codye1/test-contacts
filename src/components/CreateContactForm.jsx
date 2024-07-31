@@ -29,6 +29,7 @@ const CreateContactForm = () => {
           tags: [],
           type: "person"
         }
+        setErrors({})
         addContact(contact)
     } else {
       setErrors(validationErrors);
