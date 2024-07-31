@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 // Define a service using a base URL and expected endpoints
 export const contactsApi = createApi({
@@ -9,17 +9,38 @@ export const contactsApi = createApi({
       headers.set('Authorization', `Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn`);
       return headers;
     },
-
   }),
+  tagTypes: ['Contact'],
   endpoints: (builder) => ({
     getContacts: builder.query({
       query: () => ({
-        url:`/contacts`,
+        url: `/contacts`,
         sort: 'created:desc'
-
       }),
+      providesTags: (result) =>
+        result?.resources
+          ? [
+              ...result.resources.map(({ id }) => ({ type: 'Contact', id })),
+              { type: 'Contact', id: 'LIST' },
+            ]
+          : [{ type: 'Contact', id: 'LIST' }],
+    }),
+    addContact: builder.mutation({
+      query: (contact) => ({
+        url: "/contact",
+        method: "POST",
+        body: contact,
+      }),
+      invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
+    }),
+    deleteContact: builder.mutation({
+      query: (contactId) => ({
+        url: `/contact/${contactId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
     }),
   }),
-})
+});
 
-export const { useGetContactsQuery } = contactsApi
+export const { useGetContactsQuery, useAddContactMutation, useDeleteContactMutation } = contactsApi;
