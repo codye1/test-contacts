@@ -81,7 +81,7 @@ const ContactId = () => {
               {errorTag && <p className="text-red-500">{errorTag}</p>}
             </label>
             <button type="submit" className="font-PoppinsBold font-bold antialiased  pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%] flex justify-center">
-            {tagLoading?<Spiner/>:"Add tag"}
+              {tagLoading?<Spiner/>:"Add tag"}
             </button>
           </form>
         </>

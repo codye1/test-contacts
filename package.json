@@ -13,7 +13,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "https://codye1.github.io/test-contacts/contacts",
+  "homepage": "https://codye1.github.io/test-contacts",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.7",
     "prop-types": "^15.8.1",

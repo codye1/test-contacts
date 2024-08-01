@@ -7,7 +7,7 @@ const Routing = () => {
       {routPages.map((route, index) => (
         <Route key={index} path={route.path} element={<route.element />} />
       ))}
-      <Route path="*" element={<Navigate to="/contacts" replace />} />
+      <Route path="*" element={<Navigate to="" replace />} />
     </Routes>
   );
 };

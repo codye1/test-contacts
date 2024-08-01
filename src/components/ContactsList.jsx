@@ -50,7 +50,7 @@ const ContactsList = () => {
               deleteContact={deleteContact}
               onClick={()=>{
                 console.log("click");
-                navigate(`/contacts/${contact.id}`)
+                navigate(`/contact/${contact.id}`)
               }}
             />
           );
