@@ -3,7 +3,7 @@ import Routing from './rout/routing';
 
 const App = () => {
   return (
-    <HashRouter basename="/test-contacts">
+    <HashRouter>
       <Routing />
     </HashRouter>
   );
