@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useDeleteContactMutation, useGetContactsQuery } from "../API";
 import ContactsCard from "./ContactsCard";
+import Spiner from "./Spiner";
 
 
 
 const ContactsList = () => {
-  const { data, error, isLoading } = useGetContactsQuery()
+  const { data:persons, error:personsError, isLoading:personLoading } = useGetContactsQuery()
 
 
-  const [deleteContact] = useDeleteContactMutation()
-  console.log(data
-  );
-  if (data && "resources" in data) {
-    data.resources.forEach(element => {
+  const [deleteContact,{isLoading:deleteLoading}] = useDeleteContactMutation()
+  console.log(persons);
+  if (persons && "resources" in persons) {
+    persons.resources.forEach(element => {
       console.log(element.tags.map(tag=>tag.tag) );
     });
   }
@@ -20,15 +20,17 @@ const ContactsList = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="pl-[30px] pr-[10px] w-[70%] ">
+    <div className="min535:pl-[30px] pr-[10px] w-[100%] min535:w-[70%] ">
       <h1>Contacts</h1>
       <div className="">
         {
-        isLoading?
-          <div>Loading...</div>:
-        error?
+        personLoading?
+          <div className="flex justify-center items-center h-[50vh]">
+            <Spiner/>
+        </div>:
+        personsError?
           <div>Error...</div>:
-        data && "resources" in data && data.resources.map((contact) => {
+        persons && "resources" in persons && persons.resources.map((contact) => {
           const email = contact.fields["email"]?.[0]?.value || "No email";
           const firstName = contact.fields["first name"]?.[0]?.value || "No first name";
           const lastName = contact.fields["last name"]?.[0]?.value || "No last name";
@@ -44,6 +46,7 @@ const ContactsList = () => {
               lastName={lastName}
               avatarUrl={avatarUrl}
               tags={tags}
+              deleteLoading={deleteLoading}
               deleteContact={deleteContact}
               onClick={()=>{
                 console.log("click");

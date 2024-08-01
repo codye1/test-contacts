@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import validateForm from '../helpers/validate';
 import { useAddContactMutation, } from '../API';
+import Spiner from './Spiner';
 
 const CreateContactForm = () => {
   const [errors, setErrors] = useState({});
-  const [addContact] = useAddContactMutation()
+  const [addContact,{isLoading}] = useAddContactMutation()
 
 
   const createContact = (event) => {
     event.preventDefault();
+    if(isLoading) return
     const formData = new FormData(event.target);
     const data = {
       firstName: formData.get('firstName'),
@@ -37,13 +39,13 @@ const CreateContactForm = () => {
   };
 
   return (
-    <div className="w-[30%] ">
+    <div className="w-[100%] min535:w-[30%] ">
       <div className="sticky top-[50px]">
-      <h1>Create Contact</h1>
+      <h1 className="text-[20px]">Create Contact</h1>
       <form onSubmit={createContact}>
         <div>
           <label htmlFor="firstName">
-            <h2 className="mt-[10px] mb-[10px]">Write first name</h2>
+            <h2 className="mt-[10px] mb-[10px]">First name</h2>
             <input
               placeholder="First name"
               type="text"
@@ -54,7 +56,7 @@ const CreateContactForm = () => {
             {errors.firstName && <p className="text-red-500">{errors.firstName}</p>}
           </label>
           <label htmlFor="lastName">
-            <h2 className="mt-[10px] mb-[10px]">Write last name</h2>
+            <h2 className="mt-[10px] mb-[10px]">Last name</h2>
             <input
               placeholder="Last name"
               type="text"
@@ -65,7 +67,7 @@ const CreateContactForm = () => {
             {errors.lastName && <p className="text-red-500">{errors.lastName}</p>}
           </label>
           <label htmlFor="email">
-            <h2 className="mt-[10px] mb-[10px]">Write email</h2>
+            <h2 className="mt-[10px] mb-[10px]">Email</h2>
             <input
               placeholder="Email"
               type="email"
@@ -76,9 +78,10 @@ const CreateContactForm = () => {
             {errors.email && <p className="text-red-500">{errors.email}</p>}
           </label>
         </div>
-        <button type="submit" className="pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]">
-          Add contact
+        <button type="submit" className="pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%] flex justify-center">
+          {isLoading?<Spiner/>:"Add contact"}
         </button>
+
       </form>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import {  useParams } from "react-router-dom";
 import { useAddTagMutation, useGetContactByIdQuery } from "../API";
 import { useState } from "react";
+import Spiner from "../components/Spiner";
 
 const ContactId = () => {
 
@@ -8,21 +9,22 @@ const ContactId = () => {
 
   const [errorTag,setErrorTag] = useState(null)
 
-  const {data,error,isLoading} = useGetContactByIdQuery(params.id)
+  const {data:person,error:personError,isLoading:personLoading} = useGetContactByIdQuery(params.id)
 
-  const [addTag] = useAddTagMutation()
+  const [addTag,{isLoading:tagLoading}] = useAddTagMutation()
 
   let email,tags,lastName,avatarUrl,firstName
 
-  if (data) {
-    email = data.resources[0].fields["email"]?.[0]?.value || "No email";
-    firstName = data.resources[0].fields["first name"]?.[0]?.value || "No first name";
-    lastName = data.resources[0].fields["last name"]?.[0]?.value || "No last name";
-    avatarUrl = data.resources[0].avatar_url || "No url";
-    tags = data.resources[0].tags || []
+  if (person) {
+    email = person.resources[0].fields["email"]?.[0]?.value || "No email";
+    firstName = person.resources[0].fields["first name"]?.[0]?.value || "No first name";
+    lastName = person.resources[0].fields["last name"]?.[0]?.value || "No last name";
+    avatarUrl = person.resources[0].avatar_url || "No url";
+    tags = person.resources[0].tags || []
   }
 
   const addContact = (event) => {
+    if(tagLoading) return
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {
@@ -38,16 +40,19 @@ const ContactId = () => {
 
   return (
     <>
-      {isLoading?
-        <div>Loading...</div> :
-        error?
-        <div>Error</div>:
-        data &&
+      {personLoading?
+
+        <div className="flex justify-center items-center h-[100vh]">
+          <Spiner/>
+        </div> :
+        personError?
+        <div>Error,maybe someone deleted this contact</div>:
+        person &&
         <>
-            <div className="flex">
-              <div className="m-auto mt-[50px] w-[50%]">
+            <div className="flex font-PoppinsBold  font-bold">
+              <div className="m-auto min535:mt-[50px] mt-[20px] min535:w-[50%] w-[90%]">
                 <div className="flex items-center">
-                  <img className="w-[7em] h-[7em] rounded-[50%]"  src={avatarUrl} alt="Avatar person" />
+                  <img className="min535:w-[7em] min535:h-[7em] h-[5em] rounded-[50%]"  src={avatarUrl} alt="Avatar person" />
                   <div className="ml-[10px]">
                     <p className="flex text-base">
                       {lastName}&nbsp;{firstName}
@@ -64,20 +69,19 @@ const ContactId = () => {
             </div>
 
           </div>
-          <form className="max-w-[50%] m-auto" onSubmit={addContact}>
+          <form className="min535:max-w-[50%] w-[90%] m-auto" onSubmit={addContact}>
             <label htmlFor="tag">
-              <h2 className="mt-[10px] mb-[10px]">Write tag</h2>
               <input
-                placeholder="Tag"
+                placeholder="Add new Tag"
                 type="text"
                 name="tag"
-                className="pl-[14px] pr-[14px] pt-[12px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]"
+                className="pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]"
                 id="tag"
               />
               {errorTag && <p className="text-red-500">{errorTag}</p>}
             </label>
-            <button type="submit" className="pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]">
-              Add tag
+            <button type="submit" className="font-PoppinsBold font-bold antialiased  pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%] flex justify-center">
+            {tagLoading?<Spiner/>:"Add tag"}
             </button>
           </form>
         </>

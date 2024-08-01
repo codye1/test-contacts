@@ -1,0 +1,14 @@
+@font-face{
+  font-family:"Poppins";
+  src:url("public\Poppins-Medium.ttf") format('ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face{
+  font-family:"PoppinsBold";
+  src:url("public\Poppins-Bold.ttf") format('ttf');
+  font-weight: 700;
+  font-style: normal;
+}
+
