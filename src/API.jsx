@@ -4,7 +4,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const contactsApi = createApi({
   reducerPath: 'contactsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1',
+    baseUrl:
+      'https://cors-anywhere.herokuapp.com/https://live.devnimble.com/api/v1',
     prepareHeaders: (headers) => {
       headers.set('Authorization', `Bearer VlP9cwH6cc7Kg2LsNPXpAvF6QNmgZn`);
       return headers;
@@ -15,7 +16,7 @@ export const contactsApi = createApi({
     getContacts: builder.query({
       query: () => ({
         url: `/contacts`,
-        sort: 'created:desc'
+        sort: 'created:desc',
       }),
       providesTags: (result) =>
         result?.resources
@@ -27,8 +28,8 @@ export const contactsApi = createApi({
     }),
     addContact: builder.mutation({
       query: (contact) => ({
-        url: "/contact",
-        method: "POST",
+        url: '/contact',
+        method: 'POST',
         body: contact,
       }),
       invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
@@ -36,13 +37,13 @@ export const contactsApi = createApi({
     deleteContact: builder.mutation({
       query: (id) => ({
         url: `/contact/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
       invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
     }),
-    getContactById:builder.query({
+    getContactById: builder.query({
       query: (id) => ({
-        url: `/contact/${id}`
+        url: `/contact/${id}`,
       }),
       providesTags: (result) =>
         result?.resources
@@ -52,17 +53,23 @@ export const contactsApi = createApi({
             ]
           : [{ type: 'Contact', id: 'LIST' }],
     }),
-    addTag:builder.mutation({
-      query: ({id,tags}) => ({
+    addTag: builder.mutation({
+      query: ({ id, tags }) => ({
         url: `/contacts/${id}/tags`,
-        method: "PUT",
-        body:{
-          tags:tags
-        }
+        method: 'PUT',
+        body: {
+          tags: tags,
+        },
       }),
-      invalidatesTags: [{ type: 'Contact', id: 'LIST' }]
-    })
+      invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
+    }),
   }),
 });
 
-export const { useGetContactsQuery, useAddContactMutation, useDeleteContactMutation , useGetContactByIdQuery , useAddTagMutation} = contactsApi;
+export const {
+  useGetContactsQuery,
+  useAddContactMutation,
+  useDeleteContactMutation,
+  useGetContactByIdQuery,
+  useAddTagMutation,
+} = contactsApi;

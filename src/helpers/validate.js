@@ -14,4 +14,4 @@ const validateForm = (data) => {
   return errors;
 };
 
-export default validateForm
+export default validateForm;

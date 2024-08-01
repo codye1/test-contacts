@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { routPages } from './route-pages';
 const Routing = () => {
-
   return (
     <Routes>
       {routPages.map((route, index) => (
