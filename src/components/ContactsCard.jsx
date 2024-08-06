@@ -1,4 +1,5 @@
 import Spiner from './Spiner';
+import TagsList from './TagsList';
 import close from '/close.svg';
 import PropTypes from 'prop-types';
 
@@ -51,14 +52,7 @@ const ContactsCard = ({
         )}
       </div>
       <div className="flex mt-[10px] flex-wrap">
-        {tags.map((tag) => (
-          <div
-            className="bg-[#A6A6A6] rounded font pl-2 pr-2 m-1 wrap"
-            key={tag.id}
-          >
-            {tag.tag}
-          </div>
-        ))}
+        <TagsList tags={tags} />
       </div>
     </div>
   );

@@ -2,6 +2,9 @@ import { useParams } from 'react-router-dom';
 import { useAddTagMutation, useGetContactByIdQuery } from '../API';
 import { useState } from 'react';
 import Spiner from '../components/Spiner';
+import SubmitButton from '../components/SubmitButton';
+import InputText from '../components/InputText';
+import TagsList from '../components/TagsList';
 
 const ContactId = () => {
   const params = useParams();
@@ -28,7 +31,7 @@ const ContactId = () => {
     tags = person.resources[0].tags || [];
   }
 
-  const addContact = (event) => {
+  const addTags = (event) => {
     if (tagLoading) return;
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -36,15 +39,15 @@ const ContactId = () => {
       tag: formData.get('tag'),
     };
     if (data.tag.length > 0) {
-      console.log([...tags, data.tag]);
       addTag({
         id: params.id,
-        tags: [...tags.map((tag) => tag.tag), data.tag],
+        tags: [...tags.map((tag) => tag.tag), ...data.tag.split(',')],
       });
     } else {
       setErrorTag('Write tag');
     }
   };
+  console.log(tags);
 
   return (
     <>
@@ -74,37 +77,16 @@ const ContactId = () => {
                 </div>
                 <h1>Tags</h1>
                 <div className="flex mt-[10px] flex-wrap">
-                  {tags.map((tag) => (
-                    <div
-                      className="bg-[#A6A6A6] rounded pl-2 pr-2 m-1 wrap"
-                      key={tag.id}
-                    >
-                      {tag.tag}
-                    </div>
-                  ))}
+                  <TagsList tags={tags} />
                 </div>
               </div>
             </div>
             <form
               className="min535:max-w-[50%] w-[90%] m-auto"
-              onSubmit={addContact}
+              onSubmit={addTags}
             >
-              <label htmlFor="tag">
-                <input
-                  placeholder="Add new Tag"
-                  type="text"
-                  name="tag"
-                  className="pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]"
-                  id="tag"
-                />
-                {errorTag && <p className="text-red-500">{errorTag}</p>}
-              </label>
-              <button
-                type="submit"
-                className="font-PoppinsBold font-bold antialiased  pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%] flex justify-center"
-              >
-                {tagLoading ? <Spiner /> : 'Add tag'}
-              </button>
+              <InputText title={''} type={'text'} id={'tag'} error={errorTag} />
+              <SubmitButton title="Add tags" isLoading={tagLoading} />
             </form>
           </>
         )

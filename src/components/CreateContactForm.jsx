@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import validateForm from '../helpers/validate';
 import { useAddContactMutation } from '../API';
-import Spiner from './Spiner';
+import InputText from './InputText';
+import SubmitButton from './SubmitButton';
 
 const CreateContactForm = () => {
   const [errors, setErrors] = useState({});
@@ -47,50 +48,26 @@ const CreateContactForm = () => {
         <h1 className="text-[20px]">Create Contact</h1>
         <form onSubmit={createContact}>
           <div>
-            <label htmlFor="firstName">
-              <h2 className="mt-[10px] mb-[10px]">First name</h2>
-              <input
-                placeholder="First name"
-                type="text"
-                name="firstName"
-                className="pl-[14px] pr-[14px] pt-[12px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]"
-                id="firstName"
-              />
-              {errors.firstName && (
-                <p className="text-red-500">{errors.firstName}</p>
-              )}
-            </label>
-            <label htmlFor="lastName">
-              <h2 className="mt-[10px] mb-[10px]">Last name</h2>
-              <input
-                placeholder="Last name"
-                type="text"
-                name="lastName"
-                className="pl-[14px] pr-[14px] pt-[12px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]"
-                id="lastName"
-              />
-              {errors.lastName && (
-                <p className="text-red-500">{errors.lastName}</p>
-              )}
-            </label>
-            <label htmlFor="email">
-              <h2 className="mt-[10px] mb-[10px]">Email</h2>
-              <input
-                placeholder="Email"
-                type="email"
-                name="email"
-                className="pl-[14px] pr-[14px] pt-[12px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%]"
-                id="email"
-              />
-              {errors.email && <p className="text-red-500">{errors.email}</p>}
-            </label>
+            <InputText
+              title={'First name'}
+              type={'text'}
+              id={'firstName'}
+              error={errors.firstName}
+            />
+            <InputText
+              title={'Last name'}
+              type={'text'}
+              id={'lastName'}
+              error={errors.lastName}
+            />
+            <InputText
+              title={'Email'}
+              type={'email'}
+              id={'lastName'}
+              error={errors.email}
+            />
           </div>
-          <button
-            type="submit"
-            className="pl-[14px] pr-[14px] pt-[12px] mt-[20px] pb-[12px] border-[#AAAAAA] border-[1px] rounded w-[100%] flex justify-center"
-          >
-            {isLoading ? <Spiner /> : 'Add contact'}
-          </button>
+          <SubmitButton title="Add contact" isLoading={isLoading} />
         </form>
       </div>
     </div>

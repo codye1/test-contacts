@@ -16,7 +16,9 @@ export const contactsApi = createApi({
     getContacts: builder.query({
       query: () => ({
         url: `/contacts`,
-        sort: 'created:desc',
+        params: {
+          sort: 'created:desc',
+        },
       }),
       providesTags: (result) =>
         result?.resources
@@ -45,13 +47,7 @@ export const contactsApi = createApi({
       query: (id) => ({
         url: `/contact/${id}`,
       }),
-      providesTags: (result) =>
-        result?.resources
-          ? [
-              ...result.resources.map(({ id }) => ({ type: 'Contact', id })),
-              { type: 'Contact', id: 'LIST' },
-            ]
-          : [{ type: 'Contact', id: 'LIST' }],
+      providesTags: (result, error, id) => [{ type: 'Contact', id }],
     }),
     addTag: builder.mutation({
       query: ({ id, tags }) => ({
@@ -61,7 +57,7 @@ export const contactsApi = createApi({
           tags: tags,
         },
       }),
-      invalidatesTags: [{ type: 'Contact', id: 'LIST' }],
+      invalidatesTags: (result, error, { id }) => [{ type: 'Contact', id }],
     }),
   }),
 });

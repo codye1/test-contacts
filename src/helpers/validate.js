@@ -8,7 +8,7 @@ const validateForm = (data) => {
   }
   if (!data.email) {
     errors.email = 'Email is required';
-  } else if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(data.email)) {
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
     errors.email = 'Email address is invalid';
   }
   return errors;
